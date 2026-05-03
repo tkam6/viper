@@ -1,4 +1,4 @@
-import lexer.intl as lint
+import src.lexer.intl as lint
 
 
 class Lexer:
@@ -9,6 +9,27 @@ class Lexer:
                 continue
             break
         return idx
+
+    def _reslv_esc_chrs(self, s: str) -> int:
+        skip = 0
+        s_len = len(s)
+        final = []
+        for i, ch in enumerate(s):
+            if skip:
+                skip -= 1
+                continue
+            if ch != "\\":
+                final.append(ch)
+                continue
+            if i < s_len - 1:
+                tmp = lint.ESC_CHR_MAP.get(s[i + 1])
+                if tmp is None:
+                    final.append(s[i + 1])
+                else:
+                    final.append(tmp)
+                # TODO: Change when escape characters become more complex
+                skip += 1
+        return "".join(final)
 
     def _get_num(self, src: str, src_len: int, idx: int) -> lint.Tok:
         start = idx
@@ -32,18 +53,21 @@ class Lexer:
 
     def _get_str(self, src: str, src_len: int, idx: int) -> lint.Tok:
         start = idx
+        quote = src[start]
         # For starting quote
         idx += 1
         while idx < src_len:
             ch = src[idx]
-            if ch == "\"":
+            # Is quote character, and no backslash in front to escape it
+            if ch == quote and src[idx - 1] != "\\":
                 break
             if ch in lint.WS:
                 return lint.Tok(lint.TT.INV, src[start : idx], start, idx)
             idx += 1
-        # idx + 1 for end value to accommodate ending quote
-        val = src[start : idx + 1]
-        return lint.Tok(lint.TT.STR, val, start, idx + 1)
+        # Quotes aren't included in token value
+        val = src[start + 1 : idx]
+        escd_val = self._reslv_esc_chrs(val)
+        return lint.Tok(lint.TT.STR, escd_val, start, idx + 1)
 
     def _get_wd(self, src: str, src_len: int, idx: int) -> lint.Tok:
         start = idx
@@ -105,10 +129,21 @@ class Lexer:
                     tok = lint.Tok(lint.TT.NOTEQ, "!=", idx, idx + 2)
             elif ch in lint.DIGITS:
                 tok = self._get_num(src, src_len, idx)
-            elif ch == "\"":
+            elif ch in ("\'", "\""):
                 tok = self._get_str(src, src_len, idx)
             elif ch in lint.VALID_WD_START_CHS:
                 tok = self._get_wd(src, src_len, idx)
+            elif ch == "\\":
+                tok = lint.Tok(lint.TT.BSLASH, "\\", idx, idx + 1)
+            # FOR WHITESPACE TOKENS
+            # elif ch == " ":
+            #     tok = lint.Tok(lint.TT.SPACE, " ", idx, idx + 1)
+            # elif ch == "\t":
+            #     tok = lint.Tok(lint.TT.TAB, "\t", idx, idx + 1)
+            # elif ch == "\r":
+            #     tok = lint.Tok(lint.TT.CARR_RET, "\r", idx, idx + 1)
+            # elif ch == "\n":
+            #     tok = lint.Tok(lint.TT.NL, "\n", idx, idx + 1)
             else:
                 tok = lint.Tok(lint.TT.INV, ch, idx, idx + 1)
 

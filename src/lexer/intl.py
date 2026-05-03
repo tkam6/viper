@@ -1,18 +1,7 @@
 import enum as en
 import typing as ty
 
-import utils.gen as ugen
-
-iota_cntr = 0
-
-
-def iota(reset: bool = False) -> int:
-    global iota_cntr
-    if reset:
-        iota_cntr = 0
-    res = iota_cntr
-    iota_cntr += 1
-    return res
+import src.utils.gen as ugen
 
 
 class TokTyps(en.IntEnum):
@@ -39,6 +28,15 @@ class TokTyps(en.IntEnum):
     DOU_LT = en.auto()
     DOU_GT = en.auto()
 
+    BSLASH = en.auto()
+    SEMICLN = en.auto()
+    CLN = en.auto()
+
+    SPACE = en.auto()
+    TAB = en.auto()
+    CARR_RET = en.auto()
+    NL = en.auto()
+
     INT = en.auto()
     FLOAT = en.auto()
     STR = en.auto()
@@ -50,15 +48,30 @@ class Tok(ty.NamedTuple):
     start: int
     end: int
 
+    def __eq__(self, other: ty.Any) -> bool:
+        if not isinstance(other, Tok):
+            return False
+        return (
+            self.typ == other.typ
+            and self.val == other.val
+            and self.start == other.start
+            and self.end == other.end
+        )
     def __repr__(self) -> str:
-        return f"{{{self.typ:02}: {self.val}}}"
-
-
-class NoCloseQuote(ugen.Err):
-    pass
+        return f"{{{self.typ.name:02}: {repr(self.val)}: {self.start},{self.end}}}"
 
 
 TT = TokTyps
+KEYWDS = {"if", "elif", "else", "while", "for", "snoo"}
+ESC_CHR_MAP = {
+    "\\": "\\",
+    "\'": "\'",
+    "\"": "\"",
+    "t": "\t",
+    "r": "\r",
+    "n": "\n"
+}
+
 WS = {" ", "\t", "\r", "\n"}
 DIGITS = set("0123456789")
 U_ALPHAS = set("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
@@ -67,4 +80,3 @@ ALPHAS = U_ALPHAS | L_ALPHAS
 VALID_WD_START_CHS = ALPHAS | {"_"}
 VALID_WD_CHS = DIGITS | ALPHAS | {"_"}
 VALID_NUM_CHS = DIGITS | {"."}
-KEYWDS = {"if", "elif", "else", "while", "for"}
