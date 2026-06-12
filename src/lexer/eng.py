@@ -1,7 +1,22 @@
-import src.lexer.intl as lint
+import lexer.intl as lint
 
 
 class Lexer:
+    ARITH_SYM_MAP = {
+        "+": lint.TT.PLUS,
+        "-": lint.TT.MINUS,
+        "*": lint.TT.ASTER,
+        "/": lint.TT.FSLASH
+    }
+    GRP_SYM_MAP = {
+        "(": lint.TT.LPAREN,
+        ")": lint.TT.RPAREN,
+        "{": lint.TT.LBRACE,
+        "}": lint.TT.RBRACE,
+        "[": lint.TT.LBRACK,
+        "]": lint.TT.RBRACK
+    }
+
     def _skip_ws(self, src: str, src_len: int, idx: int) -> int:
         while idx < src_len:
             if src[idx].isspace():
@@ -91,14 +106,14 @@ class Lexer:
         while idx < src_len:
             ch = src[idx]
 
-            if ch == "+":
-                tok = lint.Tok(lint.TT.PLUS, "+", idx, idx + 1)
-            elif ch == "-":
-                tok = lint.Tok(lint.TT.MINUS, "-", idx, idx + 1)
-            elif ch == "*":
-                tok = lint.Tok(lint.TT.ASTER, "*", idx, idx + 1)
-            elif ch == "/":
-                tok = lint.Tok(lint.TT.FSLASH, "/", idx, idx + 1)
+            # Basic arithmetic operators: +, -, *, /
+            if ch in self.ARITH_SYM_MAP:
+                tok = lint.Tok(self.ARITH_SYM_MAP[ch], ch, idx, idx + 1)
+            # Grouping characters: parentheses, braces and brackets
+            elif ch in self.GRP_SYM_MAP:
+                tok = lint.Tok(self.GRP_SYM_MAP[ch], ch, idx, idx + 1)
+            elif ch == ";":
+                tok = lint.Tok(lint.TT.SEMICLN, ";", idx, idx + 1)
             elif ch == "&":
                 tok = lint.Tok(lint.TT.AMP, "&", idx, idx + 1)
                 if chk_nxt_ch("&"):
@@ -135,7 +150,7 @@ class Lexer:
                 tok = self._get_wd(src, src_len, idx)
             elif ch == "\\":
                 tok = lint.Tok(lint.TT.BSLASH, "\\", idx, idx + 1)
-            # FOR WHITESPACE TOKENS
+            # WHITESPACE TOKENS
             # elif ch == " ":
             #     tok = lint.Tok(lint.TT.SPACE, " ", idx, idx + 1)
             # elif ch == "\t":
@@ -145,6 +160,7 @@ class Lexer:
             # elif ch == "\n":
             #     tok = lint.Tok(lint.TT.NL, "\n", idx, idx + 1)
             else:
+                print(ch)
                 tok = lint.Tok(lint.TT.INV, ch, idx, idx + 1)
 
             all_toks.append(tok)

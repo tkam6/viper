@@ -1,7 +1,7 @@
 import enum as en
 import typing as ty
 
-import src.utils.gen as ugen
+import utils.gen as ugen
 
 
 class TokTyps(en.IntEnum):
@@ -27,6 +27,13 @@ class TokTyps(en.IntEnum):
     DOU_PIPE = en.auto()
     DOU_LT = en.auto()
     DOU_GT = en.auto()
+
+    LPAREN = en.auto()
+    RPAREN = en.auto()
+    LBRACE = en.auto()
+    RBRACE = en.auto()
+    LBRACK = en.auto()
+    RBRACK = en.auto()
 
     BSLASH = en.auto()
     SEMICLN = en.auto()
