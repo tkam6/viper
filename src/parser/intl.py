@@ -1,3 +1,6 @@
+from src.lexer import intl as lint
+
+
 def match(
     tok: lint.Tok,
     typ: lint.TT | None = None,

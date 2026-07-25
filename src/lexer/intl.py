@@ -1,7 +1,7 @@
 import enum as en
 import typing as ty
 
-import utils.gen as ugen
+from src.utils import gen as ugen
 
 
 class TokTyps(en.IntEnum):
@@ -69,7 +69,7 @@ class Tok(ty.NamedTuple):
 
 
 TT = TokTyps
-KEYWDS = {"if", "elif", "else", "while", "for", "snoo"}
+KEYWDS = {"if", "elif", "else", "while", "for", "snoo", "let"}
 ESC_CHR_MAP = {
     "\\": "\\",
     "\'": "\'",

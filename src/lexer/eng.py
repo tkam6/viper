@@ -1,4 +1,4 @@
-import lexer.intl as lint
+from src.lexer import intl as lint
 
 
 class Lexer:
@@ -109,7 +109,7 @@ class Lexer:
             # Basic arithmetic operators: +, -, *, /
             if ch in self.ARITH_SYM_MAP:
                 tok = lint.Tok(self.ARITH_SYM_MAP[ch], ch, idx, idx + 1)
-            # Grouping characters: parentheses, braces and brackets
+            # Grouping symbols: parentheses, braces and brackets
             elif ch in self.GRP_SYM_MAP:
                 tok = lint.Tok(self.GRP_SYM_MAP[ch], ch, idx, idx + 1)
             elif ch == ";":
@@ -151,16 +151,15 @@ class Lexer:
             elif ch == "\\":
                 tok = lint.Tok(lint.TT.BSLASH, "\\", idx, idx + 1)
             # WHITESPACE TOKENS
-            # elif ch == " ":
-            #     tok = lint.Tok(lint.TT.SPACE, " ", idx, idx + 1)
-            # elif ch == "\t":
-            #     tok = lint.Tok(lint.TT.TAB, "\t", idx, idx + 1)
-            # elif ch == "\r":
-            #     tok = lint.Tok(lint.TT.CARR_RET, "\r", idx, idx + 1)
-            # elif ch == "\n":
-            #     tok = lint.Tok(lint.TT.NL, "\n", idx, idx + 1)
+            elif ch == " ":
+                tok = lint.Tok(lint.TT.SPACE, " ", idx, idx + 1)
+            elif ch == "\t":
+                tok = lint.Tok(lint.TT.TAB, "\t", idx, idx + 1)
+            elif ch == "\r":
+                tok = lint.Tok(lint.TT.CARR_RET, "\r", idx, idx + 1)
+            elif ch == "\n":
+                tok = lint.Tok(lint.TT.NL, "\n", idx, idx + 1)
             else:
-                print(ch)
                 tok = lint.Tok(lint.TT.INV, ch, idx, idx + 1)
 
             all_toks.append(tok)

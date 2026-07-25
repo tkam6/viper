@@ -1,5 +1,5 @@
 import dataclasses as dcs
-import lexer.intl as lint
+from src.lexer import intl as lint
 
 
 @dcs.dataclass
@@ -12,3 +12,7 @@ class LetNode:
     nm: str
     val: str
     toks: list[lint.Tok]
+
+
+class GrpNode:
+    pass
