@@ -7,10 +7,9 @@ import typing as ty
 from src.lexer import eng as leng
 from src.parser import eng as peng
 from src.utils import consts as uconst
+from src.utils import debug as udeb
 from src.utils import err_codes as uerr
 from src.utils import gen as ugen
-# TODO: REMOVE!
-from src.utils import debug as udeb
 
 
 def parse_argv(
@@ -63,7 +62,7 @@ def parse_argv(
 
 def main() -> None:
     args, opts, flags = parse_argv(sys.argv[1 :], 0, 0, valid_opts=("-f", "--file"), valid_flags=())
-    flnm = (opts.get("-f") or opts.get("--file")) or "/home/vallu/projs/viper/dev/main.vi"
+    flnm = (opts.get("-f") or opts.get("--file")) or "/home/vallu/devel/viper/dev/main.vi"
     try:
         stat_res = os.stat(flnm)
         # Check if not regular file; directories, /dev/full and such sort eliminated

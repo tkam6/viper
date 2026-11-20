@@ -1,52 +1,53 @@
-import enum as en
+import enum
 import typing as ty
 
 from src.utils import gen as ugen
 
 
-class TokTyps(en.IntEnum):
+class TokTyps(enum.IntEnum):
     INV = 0
-    KEYWD = en.auto()
-    IDENT = en.auto()
+    KEYWD = enum.auto()
+    IDENT = enum.auto()
 
-    EQ = en.auto()
-    PLUS = en.auto()
-    MINUS = en.auto()
-    ASTER = en.auto()
-    FSLASH = en.auto()
-    EQEQ = en.auto()
-    NOTEQ = en.auto()
-    LT = en.auto()
-    LTEQ = en.auto()
-    GT = en.auto()
-    GTEQ = en.auto()
-    AMP = en.auto()
-    PIPE = en.auto()
-    EXCLM = en.auto()
-    DOU_AMP = en.auto()
-    DOU_PIPE = en.auto()
-    DOU_LT = en.auto()
-    DOU_GT = en.auto()
+    EQ = enum.auto()
+    PLUS = enum.auto()
+    MINUS = enum.auto()
+    ASTER = enum.auto()
+    FSLASH = enum.auto()
+    EQEQ = enum.auto()
+    NOTEQ = enum.auto()
+    LT = enum.auto()
+    LTEQ = enum.auto()
+    GT = enum.auto()
+    GTEQ = enum.auto()
+    AMP = enum.auto()
+    PIPE = enum.auto()
+    EXCLM = enum.auto()
+    DOU_AMP = enum.auto()
+    DOU_PIPE = enum.auto()
+    DOU_LT = enum.auto()
+    DOU_GT = enum.auto()
 
-    LPAREN = en.auto()
-    RPAREN = en.auto()
-    LBRACE = en.auto()
-    RBRACE = en.auto()
-    LBRACK = en.auto()
-    RBRACK = en.auto()
+    LPAREN = enum.auto()
+    RPAREN = enum.auto()
+    LBRACE = enum.auto()
+    RBRACE = enum.auto()
+    LBRACK = enum.auto()
+    RBRACK = enum.auto()
 
-    BSLASH = en.auto()
-    SEMICLN = en.auto()
-    CLN = en.auto()
+    BSLASH = enum.auto()
+    SEMICLN = enum.auto()
+    CLN = enum.auto()
 
-    SPACE = en.auto()
-    TAB = en.auto()
-    CARR_RET = en.auto()
-    NL = en.auto()
+    SPACE = enum.auto()
+    TAB = enum.auto()
+    CARR_RET = enum.auto()
+    NL = enum.auto()
 
-    INT = en.auto()
-    FLOAT = en.auto()
-    STR = en.auto()
+    INT = enum.auto()
+    FLOAT = enum.auto()
+    BOOL = enum.auto()
+    STR = enum.auto()
 
 
 class Tok(ty.NamedTuple):
@@ -65,7 +66,7 @@ class Tok(ty.NamedTuple):
             and self.end == other.end
         )
     def __repr__(self) -> str:
-        return f"{{{self.typ.name:02}: {repr(self.val)}: {self.start},{self.end}}}"
+        return f"{{{self.typ.name:02}: {self.val!r}: {self.start},{self.end}}}"
 
 
 TT = TokTyps

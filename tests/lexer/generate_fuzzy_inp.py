@@ -43,4 +43,6 @@ for test_num in range(num_tests):
     except OSError as e:
         sys.stderr.write(f"OS error; {e.strerror}: {flnm}")
         sys.exit(2)
-    print(f"Generated test number {test_num + 1}")
+    # print(f"Generated test number {test_num + 1}")
+
+print(os.path.realpath(out_dir))
